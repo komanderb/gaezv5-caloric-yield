@@ -1,0 +1,106 @@
+theme2_code,theme2_name,theme2_group,theme5_code,theme5_name,mapping_note,theme6_code,theme6_name
+ALFA,Alfalfa,Fodder crops,ALF,Alfalfa,manual,FDD,Fodder crops
+BANA,Banana,Fruits,BAN,Banana,manual,BAN,Banana and Plantain
+BARL,Barley,Cereals,BRL,Barley,manual,BRL,Barley
+BSRG,Biomass sorghum,Bioenergy feedstocks,BSG,Biomass sorghum,name-match,FDD,Fodder crops
+BHSG,Biomass sorghum (highland),Bioenergy feedstocks,BSG,Biomass sorghum,name-match,FDD,Fodder crops
+BLSG,Biomass sorghum (lowland),Bioenergy feedstocks,BSG,Biomass sorghum,name-match,FDD,Fodder crops
+BTSG,Biomass sorghum (temperate),Bioenergy feedstocks,BSG,Biomass sorghum,name-match,FDD,Fodder crops
+BRCH,Brachiaria,Bioenergy feedstocks,BCH,Brachiaria,manual,FDD,Fodder crops
+BCKW,Buckwheat,Cereals,BCK,Buckwheat,manual,OCE,"Other cereals (oats, rye, buckwheat and other minor grains)"
+CABB,Cabbage,Vegetables,CAB,Cabbage,manual,OVG,Other vegetables (i.e. all vegetables except tomato)
+COCO,Cacao (best of comum and hybrid),Narcotics and stimulants,COC,Cocoa,manual,COC,Cocoa
+COCC,Cacao (comum),Narcotics and stimulants,COC,Cocoa,manual,COC,Cocoa
+COCH,Cacao (hybrid),Narcotics and stimulants,COC,Cocoa,manual,COC,Cocoa
+CAME,"Camelina, all types",Bioenergy feedstocks,CAM,Camelina,manual,OOC,Olives and other minor oil crops
+CAMW,"Camelina, autumn and winter types",Bioenergy feedstocks,CAM,Camelina,manual,OOC,Olives and other minor oil crops
+CAMSP,"Camelina, spring types",Bioenergy feedstocks,CAM,Camelina,manual,OOC,Olives and other minor oil crops
+CARI,Carinata,Bioenergy feedstocks,CRT,Carinata,manual,OOC,Olives and other minor oil crops
+CARIS,Carinata spring types,Bioenergy feedstocks,CRT,Carinata,manual,OOC,Olives and other minor oil crops
+CARIW,Carinata winter type,Bioenergy feedstocks,CRT,Carinata,manual,OOC,Olives and other minor oil crops
+CARR,Carrot,Vegetables,CAR,Carrot,manual,OVG,Other vegetables (i.e. all vegetables except tomato)
+CASH,Cashew,Oil crops,CSH,Cashew,manual,FRT,Fruits and Nuts
+CASV,Cassava,Roots and tubers,CSV,Cassava,name-match,CSV,Cassava
+CAST,Castor bean,Oil crops,CST,Castor bean,manual,OOC,Olives and other minor oil crops
+CHCK,Chickpea,Pulses,CHK,Chickpea,manual,PLS,Pulses
+CITR,Citrus,Fruits,CIT,Citrus,manual,FRT,Fruits and Nuts
+COCN,Coconut,Fruits,CON,Coconut,manual,CON,Coconut
+COFF,Coffee (best of arabica and robusta),Narcotics and stimulants,COF,Coffee,manual,COF,Coffee
+COFA,Coffee arabica,Narcotics and stimulants,COF,Coffee,manual,COF,Coffee
+COFR,Coffee robusta,Narcotics and stimulants,COF,Coffee,manual,COF,Coffee
+COTT,Cotton,Industrial crops,COT,Cotton,manual,COT,Seed Cotton
+COWP,Cowpea,Pulses,COW,Cowpea,manual,PLS,Pulses
+DPEA,Dry peas,Pulses,PEA,Dry pea,manual,PLS,Pulses
+RICD,Dryland rice,Cereals,RCD,Dryland rice,manual,RCW,Rice
+COC3,Dwarf coconut,Fruits,CON,Coconut,manual,CON,Coconut
+ECAN,Energy cane,Bioenergy feedstocks,ECN,Energy cane,manual,NES,"All other crops not elsewhere included (mainly spices, fibre crops)"
+ECANV2,Energy cane v2,Bioenergy feedstocks,ECN,Energy cane,manual,NES,"All other crops not elsewhere included (mainly spices, fibre crops)"
+ECANV3,Energy cane v3,Bioenergy feedstocks,ECN,Energy cane,manual,NES,"All other crops not elsewhere included (mainly spices, fibre crops)"
+FIMLT,Finger millet,Cereals,FML,Foxtail millet,manual,MLT,Millet
+FLAX,Flax fibre,Industrial crops,FLX,Flax,manual,NES,"All other crops not elsewhere included (mainly spices, fibre crops)"
+FONI,Fonio,Cereals,NAN,NAN,unmapped,,
+FMLT,Foxtail millet,Cereals,FML,Foxtail millet,manual,MLT,Millet
+GRAM,Gram,Pulses,GRM,Gram,manual,PLS,Pulses
+GYAM,Greater yam,Roots and tubers,YAM,Yam,manual,ORT,Yams (and other minor root crops)
+GRND,Groundnut,Oil crops,GRD,Groundnut,manual,GRD,Groundnuts (with shell)
+HMZE,Highland Maize,Cereals,MZE,Maize,manual,MZE,Maize
+HSRG,Highland tropics Sorghum,Cereals,SRG,Sorghum,manual,SRG,Sorghum
+COC2,Hybrid coconut,Fruits,CON,Coconut,manual,CON,Coconut
+JATR,Jatropha,Bioenergy feedstocks,JTR,Jatropha,manual,OOC,Olives and other minor oil crops
+LMZE,Lowland Maize,Cereals,MZE,Maize,manual,MZE,Maize
+LSRG,Lowland Sorghum,Cereals,SRG,Sorghum,manual,SRG,Sorghum
+MCAU2,"Macauba palm, inter-cropping",Bioenergy feedstocks,MCA,Macauba palm,manual,OOC,Olives and other minor oil crops
+MCAU,"Macauba palm, single cropping",Bioenergy feedstocks,MCA,Macauba palm,manual,OOC,Olives and other minor oil crops
+MAIZ,Maize,Cereals,MZE,Maize,manual,MZE,Maize
+MANG,Mango,Fruits,MNG,Mango,manual,FRT,Fruits and Nuts
+MLLT,Millet,Cereals,PML,Pearl millet,manual,MLT,Millet
+MISC,Miscanthus,Bioenergy feedstocks,MIS,Miscanthus,manual,FDD,Fodder Crops
+NAPR,Napier grass,Fodder crops,NAP,Napier grass,manual,FDD,Fodder Crops
+OATS,Oat,Cereals,OAT,Oat,manual,OCE,"Other cereals (oats, rye, buckwheat and other minor grains)"
+OILP,Oil palm,Oil crops,OLP,Oil palm,manual,OLP,Oil palm fruit
+OKRA,Okra,Vegetables,NAN,NAN,unmapped,,
+OLIV,Olive,Oil crops,OLV,Olive,manual,OOC,Olives and other minor oil crops
+ONIO,Onion,Vegetables,ONI,Onion,manual,OVG,Other vegetables (i.e. all vegetables except tomato)
+PRUB,Para-rubber,Industrial crops,RUB,Rubber,manual,RUB,Para rubber
+GRAS,Pasture grasses,Fodder crops,NAP,Napier grass,manual,FDD,Fodder crops
+GRLG,Pasture legumes,Fodder crops,SWG,Switchgrass,manual,FDD,Fodder crops
+PMLT,Pearl millet,Cereals,PML,Pearl millet,manual,MLT,Millet
+BEAN,Phaseolous bean,Pulses,PHB,Phaseolus bean,manual,PLS,Pulses
+PIGP,Pigeon pea,Pulses,PIG,Pigeonpea,manual,PLS,Pulses
+RAPE,Rapeseed,Oil crops,RSD,Rapeseed,manual,RSD,Rapeseed
+RCGR,Reed canary grass,Bioenergy feedstocks,RCG,Reed canary grass,manual,FDD,Fodder crops
+RYES,Rye,Cereals,RYE,Rye,manual,OCE,"Other cereals (oats, rye, buckwheat and other minor grains)"
+SESA,Sesame,Oil crops,SES,Sesame,name-match,SES,Sesame Seed
+MZSI,Silage maize,Fodder crops,MZS,Silage maize,manual,FDD,Fodder crops
+SOLA,Solaris Tobacco,Bioenergy feedstocks,SOL,Solaris energy tobacco,manual,OOC,Olives and other minor oil crops
+SORG,Sorghum,Cereals,SRG,Sorghum,manual,SRG,Sorghum
+SOYB,Soybean,Oil crops,SOY,Soybean,manual,SOY,Soybean
+SBRL,Spring barley,Cereals,BRL,Barley,manual,BRL,Barley
+SRYE,Spring rye,Cereals,RYE,Rye,manual,OCE,"Other cereals (oats, rye, buckwheat and other minor grains)"
+SWHE,Spring wheat,Cereals,WHE,Wheat,manual,WHE,Wheat
+SUGB,Sugar beet,Sugar crops,SUB,Sugar beet,manual,SUB,Sugar beet
+SUGC,Sugar cane,Sugar crops,SUC,Sugar cane,manual,SUC,Sugarcane
+SUNF,Sunflower,Oil crops,SFL,Sunflower,manual,SFL,Sunflower seed
+SPOT,Sweet potato,Roots and tubers,SPO,Sweet potato,manual,POT,"White potato, Sweet potato"
+SWGR,Switchgrass,Bioenergy feedstocks,SWG,Switchgrass,manual,FDD,Fodder crops
+COC1,Tall coconut,Fruits,CON,Coconut,manual,CON,Coconut
+CYAM3,Tannia (Xanthosoma sagittifolium),Roots and tubers,CYA,Taro,manual,ORT,Yams (and other minor root crops)
+CYAM1,"Taro, dryland (Colocasia esculenta)",Roots and tubers,CYA,Taro,manual,ORT,Yams (and other minor root crops)
+CYAM2,"Taro, wetland (Colocasia esculenta)",Roots and tubers,CYA,Taro,manual,ORT,Yams (and other minor root crops)
+TEAS,"Tea (best of China, Assam and hybrid types)",Narcotics and stimulants,TEA,Tea,manual,TEA,Tea & Mate leaves
+TEFF,Tef,Cereals,BCK,Buckwheat,manual,OCE,"Other cereals (oats, rye, buckwheat and other minor grains)"
+TMZE,Temperate/sub-tropical Maize,Cereals,MZE,Maize,manual,MZE,Maize
+TSRG,Temperate/sub-tropical Sorghum,Cereals,SRG,Sorghum,manual,SRG,Sorghum
+TOBA,Tobacco,Narcotics and stimulants,TOB,Tobacco,manual,TOB,Tobacco leaves
+TOMA,Tomato,Vegetables,TOM,Tomato,manual,TOM,Tomato
+TRIT,Triticale,Bioenergy feedstocks,TRI,Triticale,manual,OCE,"Other cereals (oats, rye, buckwheat and other minor grains)"
+WMEL,Watermelon,Fruits,NAN,NAN,unmapped,Nan,Nan
+RICW,Wetland rice,Cereals,RCW,Wetland rice,manual,RCW,Rice
+WHEA,Wheat,Cereals,WHE,Wheat,manual,WHE,Wheat
+WPOT,White potato,Roots and tubers,WPO,White potato,manual,POT,"White potato, Sweet potato"
+WYAM,White yam,Roots and tubers,YAM,Yam,manual,ORT,Yams (and other minor root crops)
+WBRL,Winter barley (sub-tropical and tropical highland),Cereals,BRL,Barley,manual,BRL,Barley
+WRYE,Winter rye,Cereals,RYE,Rye,heuristic,OCE,"Other cereals (oats, rye, buckwheat and other minor grains)"
+WWHE,Winter wheat (sub-tropical and tropical highland),Cereals,WHE,Wheat,manual,WHE,Wheat
+YAMS,"Yam (best of white, great and yellow yams)",Roots and tubers,YAM,Yam,manual,ORT,Yams (and other minor root crops)
+YYAM,Yellow yam,Roots and tubers,YAM,Yam,manual,ORT,Yams (and other minor root crops)

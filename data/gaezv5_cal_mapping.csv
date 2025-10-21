@@ -1,0 +1,34 @@
+Group,gaez_crop_code,name,cal_yld,crop_type
+33,NES,"All other crops not elsewhere included (mainly spices, fibre crops)",0,other
+24,BAN,Banana and Plantain,394,grain
+6,BRL,Barley,391,grain
+9,CSV,Cassava,397,grain
+26,COC,Cocoa,0,cash
+20,CON,Coconut,668,grain
+25,COF,Coffee,0,cash
+30,FDD,Fodder crops,0,other
+31,FRT,Fruits and Nuts,631,grain
+17,GRD,Groundnuts (with shell),618,grain
+3,MZE,Maize,407,grain
+5,MLT,Millet,413,grain
+19,OLP,Oil palm fruit,810,grain
+21,OOC,Olives and other minor oil crops,810,grain
+7,OCE,"Other cereals (oats, rye, buckwheat and other minor grains)",404,grain
+29,OVG,Other vegetables (i.e. all vegetables except tomato),365,grain
+32,RUB,Para rubber,0,cash
+13,PLS,Pulses,393,grain
+15,RSD,Rapeseed,810,grain
+2,RCW,Rice,413,grain
+22,COT,Seed cotton,0,cash
+18,SES,Sesame seed,601,grain
+4,SRG,Sorghum,375,grain
+14,SOY,Soybean,488,grain
+11,SUB,Sugar beet,387,grain
+12,SUC,Sugarcane,387,grain
+16,SFL,Sunflower seed,613,grain
+27,TEA,Tea & Mate leaves,0,cash
+23,TOB,Tobacco leaves,0,cash
+28,TOM,Tomato,415,grain
+1,WHE,Wheat,377,grain
+8,POT,"White potato, Sweet potato",363,grain
+10,ORT,Yams (and other minor root crops),388,grain
