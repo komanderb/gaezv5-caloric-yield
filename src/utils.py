@@ -6,6 +6,19 @@ import rasterio
 import numpy as np
 import pandas as pd
 import logging
+import requests
+from concurrent.futures import ThreadPoolExecutor, as_completed
+
+RASTER_CACHE_DIR = Path("cache/rasters")
+OPEN_CHUNKS = {"y": 512, "x": 512}
+
+# Water-code mapping (yield water -> harvested-area water)
+YR_WATER_TO_AREA = {
+    "HILM": "WSI",  # irrigated/high-input  -> irrigated harvested area
+    "LILM": "WSI",  # irrigated/low-input   -> irrigated harvested area
+    "HRLM": "WSR",  # rainfed/high-input    -> rainfed harvested area
+    "LRLM": "WSR",  # rainfed/low-input     -> rainfed harvested area
+}
 
 
 def gaezv5_path(variable_code,       # e.g. "RES05-YCX" or "RES03-YLD" or "RES06-HAR"
@@ -33,24 +46,134 @@ def gaezv5_path(variable_code,       # e.g. "RES05-YCX" or "RES03-YLD" or "RES06
     return f"{base}/{variable_code}/{fname}"
 
 
-def open_raster(url):
-    OPEN_CHUNKS = {"y": 512, "x": 512}
-    # lean GDAL settings for faster HTTP range reads
-    with rasterio.Env(
-        GDAL_DISABLE_READDIR_ON_OPEN="TRUE",
-        CPL_VSIL_CURL_ALLOWED_EXTENSIONS=".tif",
-        CPL_VSIL_CURL_CHUNK_SIZE="10485760",  # 16MB
-        GDAL_HTTP_MAX_RETRY="3",
-        GDAL_HTTP_RETRY_DELAY="1",
-        #GDAL_CACHEMAX="1024",  # MB
-        NUM_THREADS="ALL_CPUS"
-    ):
-        #try:
+# ── Local raster cache ────────────────────────────────────────────────────────
 
-        da = rxr.open_rasterio(url, masked=True, chunks=OPEN_CHUNKS).squeeze()
-        #except Exception as e:
-            #raise RuntimeError(f"Failed to open raster: {url} -> {e}") from e
-    return da.astype("float32")  # keeps I/O & memory lighter
+def _local_cache_path(url: str) -> Path:
+    """Deterministic local path for a remote raster URL."""
+    parts = url.rstrip("/").split("/")
+    fname = parts[-1]
+    var_code = parts[-2]
+    return RASTER_CACHE_DIR / var_code / fname
+
+
+def _download_file(url: str, dest: Path) -> bool:
+    """Download a file from URL to dest with atomic write. Returns True on success."""
+    dest.parent.mkdir(parents=True, exist_ok=True)
+    tmp = dest.with_suffix(dest.suffix + ".tmp")
+    try:
+        with requests.get(url, stream=True, timeout=120) as r:
+            r.raise_for_status()
+            with open(tmp, "wb") as f:
+                for chunk in r.iter_content(chunk_size=131072):  # 128 KB
+                    f.write(chunk)
+        tmp.rename(dest)
+        return True
+    except Exception as e:
+        tmp.unlink(missing_ok=True)
+        logging.debug(f"Download failed: {url} -> {e}")
+        return False
+
+
+def _ensure_local(url: str) -> str:
+    """Return local path for a remote URL, downloading if needed."""
+    local = _local_cache_path(url)
+    if local.exists():
+        return str(local)
+    if _download_file(url, local):
+        return str(local)
+    raise RuntimeError(f"Failed to download: {url}")
+
+
+def open_raster(url_or_path):
+    """Open a raster. Remote URLs are downloaded to local cache first."""
+    path = str(url_or_path)
+    if path.startswith(("http://", "https://")):
+        path = _ensure_local(path)
+    da = rxr.open_rasterio(path, masked=True, chunks=OPEN_CHUNKS).squeeze()
+    return da.astype("float32")
+
+
+# ── URL existence manifest ────────────────────────────────────────────────────
+
+def check_urls_exist(urls, max_workers=32):
+    """Check which URLs exist via concurrent HEAD requests.
+    URLs already in local cache are counted as existing without a network call.
+    Returns the set of existing URLs."""
+    existing = set()
+    to_check = []
+    for url in set(urls):
+        if _local_cache_path(url).exists():
+            existing.add(url)
+        else:
+            to_check.append(url)
+
+    if not to_check:
+        logging.info(f"URL manifest: all {len(existing)} URLs already cached locally")
+        return existing
+
+    logging.info(f"Checking {len(to_check)} URLs ({len(existing)} already cached) …")
+
+    def _head(url):
+        try:
+            r = requests.head(url, timeout=10, allow_redirects=True)
+            return url, r.status_code in (200, 206)
+        except Exception:
+            return url, False
+
+    with ThreadPoolExecutor(max_workers=max_workers) as pool:
+        futures = [pool.submit(_head, u) for u in to_check]
+        for fut in as_completed(futures):
+            url, ok = fut.result()
+            if ok:
+                existing.add(url)
+
+    logging.info(f"  {len(existing)} of {len(existing | set(to_check))} URLs available")
+    return existing
+
+
+# ── HAR raster preload cache ─────────────────────────────────────────────────
+
+def preload_har_cache(groups, waters):
+    """Download and open all HAR rasters for given groups and water codes.
+    Returns dict keyed by (group, area_water) -> DataArray."""
+    needed = {}
+    for group in groups:
+        for water in waters:
+            area_water = YR_WATER_TO_AREA[water]
+            key = (group, area_water)
+            if key not in needed:
+                needed[key] = gaezv5_path(
+                    variable_code="RES06-HAR",
+                    period=None, climate_model=None, scenario=None,
+                    crop=group, water_code=area_water,
+                )
+
+    # Download all HAR files in parallel
+    logging.info(f"Preloading {len(needed)} HAR rasters …")
+
+    def _download_one(item):
+        key, url = item
+        try:
+            local = _ensure_local(url)
+            return key, local, None
+        except Exception as e:
+            return key, None, e
+
+    with ThreadPoolExecutor(max_workers=16) as pool:
+        results = list(pool.map(_download_one, needed.items()))
+
+    cache = {}
+    for key, local_path, err in results:
+        if err is not None:
+            logging.warning(f"Failed to preload HAR {key}: {err}")
+            continue
+        try:
+            cache[key] = open_raster(local_path)
+        except Exception as e:
+            logging.warning(f"Failed to open HAR {key}: {e}")
+
+    logging.info(f"  Loaded {len(cache)}/{len(needed)} HAR rasters into cache")
+    return cache
 
 
 def get_crop_mapping(variable_code):
@@ -96,24 +219,22 @@ def get_cal_mapper(path="data/gaezv5_cal_mapping.csv"):
 
 
 def group_kcal_average(group, crops, kcal_per_kg,
-                       water_code, variable_code_yield, period, climate_model, scenario
+                       water_code, variable_code_yield, period, climate_model, scenario,
+                       har_cache=None, url_manifest=None,
                        ):
-    YR_WATER_TO_AREA = {
-        "HILM": "WSI",  # irrigated/high-input  -> irrigated harvested area
-        "LILM": "WSI",  # irrigated/low-input   -> irrigated harvested area
-        "HRLM": "WSR",  # rainfed/high-input    -> rainfed harvested area
-        "LRLM": "WSR",  # rainfed/low-input     -> rainfed harvested area
-    }
-
     # transform water / input to area water
     area_water = YR_WATER_TO_AREA[water_code]
-    a_path = gaezv5_path(
-        variable_code="RES06-HAR",
-        period=None, climate_model=None, scenario=None,
-        crop=group, water_code=area_water
-    )
-    # load group harvested area
-    areaG = open_raster(a_path)
+
+    # Use cached HAR raster if available, otherwise open fresh
+    if har_cache is not None and (group, area_water) in har_cache:
+        areaG = har_cache[(group, area_water)]
+    else:
+        a_path = gaezv5_path(
+            variable_code="RES06-HAR",
+            period=None, climate_model=None, scenario=None,
+            crop=group, water_code=area_water
+        )
+        areaG = open_raster(a_path)
 
 
     yld_ha_layers = []
@@ -127,6 +248,12 @@ def group_kcal_average(group, crops, kcal_per_kg,
             crop=c,
             water_code=water_code,
         )
+
+        # Skip if URL manifest says it doesn't exist
+        if url_manifest is not None and y_path not in url_manifest:
+            logging.debug(f"[{group}] skipping crop={c} ({water_code}) – not in manifest")
+            continue
+
         try:
             yld = open_raster(y_path)
         except Exception as e:
@@ -153,19 +280,27 @@ def group_kcal_average(group, crops, kcal_per_kg,
 
 def sum_groups_kcal(crop_mapping, calorie_mapping,
                     water_code, variable_code_yield,
-                    period, climate_model, scenario):
+                    period, climate_model, scenario,
+                    har_cache=None, url_manifest=None):
 
-    group_layers = []
+    total_kcal = None
     for group_crop, kcal in calorie_mapping.items():
         crops = crop_mapping.get(group_crop)
 
         layer = group_kcal_average(group=group_crop, crops=crops, kcal_per_kg=kcal,
                                    variable_code_yield=variable_code_yield,
                                    period=period, climate_model=climate_model,
-                                   scenario=scenario, water_code=water_code)
-        group_layers.append(layer)
+                                   scenario=scenario, water_code=water_code,
+                                   har_cache=har_cache, url_manifest=url_manifest)
+        # Running sum avoids building a large concatenated array
+        if total_kcal is None:
+            total_kcal = layer.fillna(0)
+        else:
+            total_kcal = total_kcal + layer.fillna(0)
 
-    total_kcal = xr.concat(group_layers, dim="group").sum("group", skipna=True)
+    if total_kcal is None:
+        raise RuntimeError("No group layers produced")
+
     total_kcal.name = f"cal_yld_{variable_code_yield}_{period}_{climate_model}_{scenario}_{water_code}"
     return total_kcal
 

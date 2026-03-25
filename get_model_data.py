@@ -12,15 +12,11 @@ OVERWRITE = False
 LOGLEVEL = "INFO"
 
 # Periods split
-HIST_PERIODS = ["HP8100","HP0120"]       #w need to split
-FUTURE_PERIODS = ["FP2140","FP4160","FP6180","FP8100"]
-
-# Models per scenario (adjust to your chosen set)
-HIST_MODELS = ["AGERA5"]                       # <- the “model” token used for historical in GAEZ v5
-FUTURE_MODELS = ["ENSEMBLE"]                  # extend as needed
+  #w need to split
+FUTURE_PERIODS = ["FP2140"]
+FUTURE_MODELS = ["GFDL-ESM4", "IPSL-CM6A-LR", "MPI-ESM1-2-HR", "UKESM1-0-LL"]                  # extend as needed
 
 SCENARIOS = {
-    "HIST":   {"periods": HIST_PERIODS,   "models": HIST_MODELS},
     "SSP126": {"periods": FUTURE_PERIODS, "models": FUTURE_MODELS},
     "SSP370": {"periods": FUTURE_PERIODS, "models": FUTURE_MODELS},
     "SSP585": {"periods": FUTURE_PERIODS, "models": FUTURE_MODELS},
